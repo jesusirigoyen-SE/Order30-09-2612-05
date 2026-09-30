@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jeeves Platinum — Propuesta Exclusiva</title>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:   #0A0A0C;
+  --black-2: #0F0F14;
+  --black-3: #16161E;
+  --black-4: #1E1E28;
+  --black-5: #26262F;
+  --gold:         #C9A84C;
+  --gold-light:   #E2C97E;
+  --gold-dim:     rgba(201,168,76,0.10);
+  --gold-border:  rgba(201,168,76,0.22);
+  --gold-glow:    rgba(201,168,76,0.06);
+  --plat:         #E8E8EE;
+  --plat-dim:     rgba(232,232,238,0.08);
+  --plat-border:  rgba(232,232,238,0.15);
+  --pacific:      #51ACBC;
+  --pacific-dim:  rgba(81,172,188,0.10);
+  --green:        #4ABCA0;
+  --green-dim:    rgba(74,188,160,0.10);
+  --text-primary:   #F2EFE8;
+  --text-secondary: #9A9690;
+  --text-muted:     #50504A;
+  --r: 12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Urbanist',-apple-system,sans-serif;
+  background:var(--black);
+  color:var(--text-primary);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  cursor:default;
+}
+
+/* ── CANVAS BG ── */
+#bg-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;opacity:0.55;
+}
+
+/* ── SCROLL WRAPPER ── */
+.page{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 32px 80px;}
+
+/* ── FADE IN ANIMATION ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.72s ease,transform 0.72s ease;}
+.reveal.visible{opacity:1;transform:none;}
+.reveal-d1{transition-delay:0.08s;}
+.reveal-d2{transition-delay:0.16s;}
+.reveal-d3{transition-delay:0.24s;}
+.reveal-d4{transition-delay:0.32s;}
+.reveal-d5{transition-delay:0.40s;}
+
+/* ──────────── NAV ──────────── */
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:28px 0 20px;
+  border-bottom:1px solid var(--black-4);
+  margin-bottom:0;
+}
+.nav-logo{
+  font-size:15px;font-weight:800;letter-spacing:0.12em;
+  text-transform:uppercase;color:var(--text-primary);
+}
+.nav-logo span{color:var(--gold);}
+.nav-badge{
+  display:flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,rgba(201,168,76,0.12),rgba(232,232,238,0.06));
+  border:1px solid var(--gold-border);
+  border-radius:100px;padding:6px 16px;
+}
+.nav-badge-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold);
+  box-shadow:0 0 6px var(--gold);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.8);}}
+.nav-badge-text{
+  font-size:11px;font-weight:700;letter-spacing:0.10em;
+  text-transform:uppercase;color:var(--gold-light);
+}
+
+/* ──────────── HERO ──────────── */
+.hero{
+  position:relative;
+  padding:72px 0 60px;
+  text-align:center;
+  overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;
+  top:-100px;left:50%;transform:translateX(-50%);
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(201,168,76,0.09) 0%,transparent 68%);
+  pointer-events:none;
+}
+.hero::after{
+  content:'';position:absolute;
+  bottom:-60px;left:50%;transform:translateX(-50%);
+  width:300px;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold-border),transparent);
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:20px;
+}
+.hero-eyebrow::before,.hero-eyebrow::after{
+  content:'';width:32px;height:1px;background:var(--text-muted);
+}
+.hero-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(48px,8vw,80px);
+  font-weight:900;line-height:1.0;
+  letter-spacing:-0.02em;
+  background:linear-gradient(135deg,var(--plat) 0%,var(--gold-light) 40%,var(--plat) 70%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  margin-bottom:8px;
+}
+.hero-title-sub{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(16px,3vw,22px);
+  font-weight:700;
+  color:var(--text-secondary);
+  letter-spacing:0.02em;
+  margin-bottom:28px;
+}
+.hero-desc{
+  max-width:520px;margin:0 auto 48px;
+  font-size:15px;line-height:1.7;color:var(--text-secondary);font-weight:400;
+}
+
+/* Price hero */
+.hero-price-block{
+  display:inline-flex;align-items:flex-end;gap:12px;
+  background:var(--black-2);
+  border:1px solid var(--gold-border);
+  border-radius:16px;padding:24px 40px;
+  margin-bottom:40px;
+  position:relative;overflow:hidden;
+}
+.hero-price-block::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.price-amount{
+  font-family:'Playfair Display',serif;
+  font-size:52px;font-weight:900;line-height:1;
+  color:var(--gold);
+}
+.price-suffix{
+  padding-bottom:8px;
+  font-size:13px;color:var(--text-muted);font-weight:500;
+  line-height:1.4;
+}
+.price-suffix strong{display:block;color:var(--text-secondary);font-size:14px;}
+
+.hero-cta{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  color:#0A0A0C;font-size:13px;font-weight:800;
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:14px 32px;border-radius:100px;border:none;cursor:pointer;
+  transition:transform 0.2s ease,box-shadow 0.2s ease;
+  text-decoration:none;
+}
+.hero-cta:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 32px rgba(201,168,76,0.3);
+}
+.hero-cta svg{width:14px;height:14px;transition:transform 0.2s ease;}
+.hero-cta:hover svg{transform:translateX(3px);}
+
+/* ──────────── SECTION LABEL ──────────── */
+.section-label{
+  font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:24px;
+  display:flex;align-items:center;gap:12px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--black-4);}
+
+/* ──────────── CASHBACK HERO CARD ──────────── */
+.cashback-card{
+  position:relative;
+  background:linear-gradient(135deg,var(--black-3) 0%,var(--black-2) 100%);
+  border:1px solid var(--gold-border);
+  border-radius:20px;padding:48px;
+  overflow:hidden;margin-bottom:16px;
+  text-align:center;
+}
+.cashback-card::before{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),var(--gold-light),var(--gold),transparent);
+}
+.cashback-orb{
+  position:absolute;top:-60px;right:-60px;
+  width:260px;height:260px;
+  background:radial-gradient(circle,rgba(201,168,76,0.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+.cashback-number{
+  font-family:'Playfair Display',serif;
+  font-size:100px;font-weight:900;line-height:1;
+  background:linear-gradient(135deg,var(--gold-light),var(--gold));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:0;
+}
+.cashback-label{
+  font-size:13px;font-weight:600;letter-spacing:0.10em;text-transform:uppercase;
+  color:var(--gold);opacity:0.7;margin-bottom:12px;
+}
+.cashback-desc{
+  font-size:18px;font-weight:600;color:var(--text-primary);margin-bottom:8px;
+}
+.cashback-sub{font-size:14px;color:var(--text-secondary);}
+
+/* ──────────── CARDS GRID ──────────── */
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:16px;}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:16px;}
+
+.feat-card{
+  position:relative;
+  background:var(--black-2);
+  border:1px solid var(--black-5);
+  border-radius:var(--r);padding:28px;
+  transition:border-color 0.3s ease,transform 0.2s ease;
+}
+.feat-card:hover{border-color:var(--gold-border);transform:translateY(-2px);}
+.feat-card-icon{
+  width:40px;height:40px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:16px;font-size:20px;
+}
+.feat-card-icon.gold-bg{background:var(--gold-dim);}
+.feat-card-icon.pacific-bg{background:var(--pacific-dim);}
+.feat-card-icon.green-bg{background:var(--green-dim);}
+.feat-card-icon.plat-bg{background:var(--plat-dim);}
+.feat-card-title{
+  font-size:14px;font-weight:700;color:var(--text-primary);
+  margin-bottom:8px;
+}
+.feat-card-desc{font-size:13px;color:var(--text-secondary);line-height:1.6;}
+.feat-card-badge{
+  position:absolute;top:16px;right:16px;
+  font-size:9px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
+  padding:3px 8px;border-radius:4px;
+}
+.badge-gold{background:var(--gold-dim);color:var(--gold);}
+.badge-plat{background:var(--plat-dim);color:var(--plat);}
+
+/* ──────────── TARJETAS WORLD ELITE CARD ──────────── */
+.card-visual{
+  background:linear-gradient(135deg,var(--black-3),var(--black-2));
+  border:1px solid var(--gold-border);
+  border-radius:20px;padding:40px;
+  display:flex;align-items:center;gap:40px;
+  position:relative;overflow:hidden;
+  margin-bottom:16px;
+}
+.card-visual::before{
+  content:'';position:absolute;
+  bottom:-80px;right:-80px;
+  width:280px;height:280px;
+  background:radial-gradient(circle,rgba(232,232,238,0.05) 0%,transparent 70%);
+}
+.card-visual-left{flex:1;}
+.card-visual-left .section-label{margin-bottom:14px;}
+.card-visual-left h3{
+  font-size:26px;font-weight:800;color:var(--text-primary);
+  margin-bottom:10px;line-height:1.2;
+}
+.card-visual-left h3 em{
+  font-style:normal;
+  background:linear-gradient(90deg,var(--plat),var(--gold-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.card-visual-left p{font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:20px;}
+.card-count{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--gold-dim);border:1px solid var(--gold-border);
+  border-radius:8px;padding:10px 16px;
+}
+.card-count-n{font-size:28px;font-weight:900;color:var(--gold);}
+.card-count-label{font-size:12px;color:var(--text-secondary);line-height:1.3;}
+.card-right{
+  flex-shrink:0;width:220px;
+}
+/* Credit card illustration */
+.cc-stack{position:relative;height:160px;width:220px;}
+.cc{
+  position:absolute;
+  width:200px;height:120px;border-radius:12px;
+  padding:18px 20px;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.cc-1{
+  bottom:0;left:0;
+  background:linear-gradient(135deg,#1A1A24,#0F0F16);
+  border:1px solid rgba(232,232,238,0.15);
+  transform:rotate(-4deg);
+}
+.cc-2{
+  bottom:24px;left:10px;
+  background:linear-gradient(135deg,#242430,#191920);
+  border:1px solid rgba(201,168,76,0.2);
+  transform:rotate(-1deg);
+}
+.cc-3{
+  bottom:40px;left:20px;
+  background:linear-gradient(135deg,#2A2A38,#1E1E28);
+  border:1px solid rgba(201,168,76,0.35);
+  z-index:3;
+}
+.cc-chip{width:28px;height:20px;border-radius:4px;background:linear-gradient(135deg,var(--gold),var(--gold-light));}
+.cc-num{font-size:9px;letter-spacing:0.12em;color:rgba(232,232,238,0.4);}
+.cc-name{font-size:8px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;color:var(--plat);opacity:0.6;}
+.cc-logo-area{display:flex;justify-content:flex-end;align-items:center;}
+.we-badge{
+  font-size:7px;font-weight:800;letter-spacing:0.10em;text-transform:uppercase;
+  color:var(--gold);border:1px solid var(--gold-border);padding:3px 6px;border-radius:3px;
+}
+
+/* ──────────── API SECTION ──────────── */
+.api-card{
+  background:var(--black-2);border:1px solid var(--black-5);
+  border-radius:20px;padding:36px 40px;
+  display:flex;align-items:flex-start;gap:32px;
+  position:relative;overflow:hidden;
+}
+.api-card::before{
+  content:'';position:absolute;
+  top:0;right:0;width:200px;height:100%;
+  background:linear-gradient(90deg,transparent,var(--pacific-dim));
+}
+.api-card-text{flex:1;}
+.api-card-text h3{
+  font-size:22px;font-weight:800;color:var(--text-primary);margin-bottom:10px;
+}
+.api-card-text p{font-size:14px;color:var(--text-secondary);line-height:1.6;max-width:440px;}
+.api-code-block{
+  flex-shrink:0;width:260px;
+  background:var(--black);border:1px solid var(--black-5);
+  border-radius:10px;padding:16px 18px;
+  font-family:'Courier New',monospace;font-size:10px;line-height:1.8;
+  position:relative;z-index:1;
+  border-top:2px solid var(--pacific);
+}
+.code-comment{color:#50504A;}
+.code-key{color:var(--pacific);}
+.code-val{color:var(--gold-light);}
+.code-str{color:var(--green);}
+
+/* ──────────── PLATFORM ROW ──────────── */
+.platform-row{
+  display:flex;gap:16px;align-items:stretch;
+}
+.platform-main{
+  flex:1;background:var(--black-2);border:1px solid var(--black-5);
+  border-radius:20px;padding:36px;position:relative;overflow:hidden;
+}
+.platform-main::after{
+  content:'';position:absolute;
+  bottom:0;left:0;right:0;height:60px;
+  background:linear-gradient(to top,var(--black-2),transparent);
+}
+.platform-main h3{font-size:22px;font-weight:800;margin-bottom:10px;}
+.platform-main p{font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:20px;}
+.platform-items{display:flex;flex-direction:column;gap:10px;}
+.pi{
+  display:flex;align-items:center;gap:12px;
+  font-size:13px;color:var(--text-secondary);
+}
+.pi-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold);flex-shrink:0;
+}
+
+.support-card{
+  width:200px;flex-shrink:0;
+  background:linear-gradient(135deg,rgba(201,168,76,0.10),rgba(201,168,76,0.04));
+  border:1px solid var(--gold-border);
+  border-radius:20px;padding:32px 24px;
+  text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+.support-icon{
+  width:56px;height:56px;border-radius:14px;
+  background:var(--gold-dim);display:flex;align-items:center;justify-content:center;
+  font-size:26px;margin-bottom:4px;
+}
+.support-card h4{font-size:15px;font-weight:800;color:var(--text-primary);line-height:1.3;}
+.support-card p{font-size:12px;color:var(--text-secondary);line-height:1.5;}
+.support-tag{
+  font-size:9px;font-weight:700;letter-spacing:0.10em;text-transform:uppercase;
+  background:var(--gold-dim);color:var(--gold);
+  padding:4px 10px;border-radius:100px;
+  border:1px solid var(--gold-border);
+}
+
+/* ──────────── GOLD BENEFITS ──────────── */
+.gold-row{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+}
+.gold-item{
+  background:var(--black-2);border:1px solid var(--black-5);
+  border-radius:var(--r);padding:20px;
+  transition:border-color 0.3s ease;
+}
+.gold-item:hover{border-color:var(--gold-border);}
+.gold-item-icon{font-size:22px;margin-bottom:10px;}
+.gold-item-title{font-size:12px;font-weight:700;color:var(--text-primary);margin-bottom:4px;}
+.gold-item-desc{font-size:11px;color:var(--text-muted);line-height:1.5;}
+
+/* ──────────── SUMMARY BAND ──────────── */
+.summary-band{
+  background:linear-gradient(135deg,var(--black-3),var(--black-2));
+  border:1px solid var(--gold-border);border-radius:20px;
+  padding:40px;position:relative;overflow:hidden;
+  text-align:center;margin-top:16px;
+}
+.summary-band::before{
+  content:'PLATINUM';
+  position:absolute;
+  font-family:'Playfair Display',serif;
+  font-size:100px;font-weight:900;
+  color:rgba(201,168,76,0.03);
+  top:50%;left:50%;transform:translate(-50%,-50%);
+  letter-spacing:0.1em;pointer-events:none;white-space:nowrap;
+}
+.summary-band::after{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.summary-items{
+  display:flex;justify-content:center;gap:0;
+  flex-wrap:wrap;margin-bottom:36px;
+}
+.summary-item{
+  padding:16px 32px;border-right:1px solid var(--black-5);
+}
+.summary-item:last-child{border-right:none;}
+.si-val{font-size:26px;font-weight:900;color:var(--gold);line-height:1;}
+.si-label{font-size:11px;color:var(--text-muted);margin-top:4px;}
+
+.summary-cta{
+  display:inline-flex;align-items:center;gap:10px;
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  color:#0A0A0C;font-size:13px;font-weight:800;
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:15px 36px;border-radius:100px;border:none;cursor:pointer;
+  transition:transform 0.2s ease,box-shadow 0.2s ease;
+}
+.summary-cta:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 32px rgba(201,168,76,0.35);
+}
+
+/* ──────────── FOOTER ──────────── */
+footer{
+  margin-top:48px;padding-top:24px;
+  border-top:1px solid var(--black-4);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.footer-logo{font-size:13px;font-weight:800;letter-spacing:0.10em;text-transform:uppercase;color:var(--text-muted);}
+.footer-logo span{color:var(--gold);}
+.footer-text{font-size:11px;color:var(--text-muted);}
+
+/* ──────────── TICKER ──────────── */
+.ticker-wrap{
+  overflow:hidden;border-top:1px solid var(--black-4);
+  border-bottom:1px solid var(--black-4);
+  padding:10px 0;margin-bottom:56px;
+  position:relative;
+}
+.ticker-wrap::before,.ticker-wrap::after{
+  content:'';position:absolute;top:0;width:60px;height:100%;z-index:2;
+}
+.ticker-wrap::before{left:0;background:linear-gradient(90deg,var(--black),transparent);}
+.ticker-wrap::after{right:0;background:linear-gradient(-90deg,var(--black),transparent);}
+.ticker-inner{
+  display:flex;gap:0;
+  width:max-content;
+  animation:ticker 28s linear infinite;
+}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.ticker-item{
+  display:flex;align-items:center;gap:8px;
+  padding:0 28px;white-space:nowrap;
+  font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--text-muted);
+}
+.ticker-item span{color:var(--gold);font-size:13px;}
+.ticker-sep{width:4px;height:4px;border-radius:50%;background:var(--black-5);}
+
+/* ──────────── COUNTER ANIMATION ──────────── */
+.count-up{display:inline-block;}
+
+/* ──────────── GATE (password + vencimiento) ──────────── */
+body.locked .page, body.locked #bg-canvas{display:none;}
+#gate{
+  position:fixed;inset:0;z-index:100;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 50% 30%,rgba(201,168,76,0.08),transparent 60%),var(--black);
+  padding:16px;
+}
+body:not(.locked) #gate{display:none;}
+.gate-box{
+  width:100%;max-width:380px;text-align:center;
+  background:var(--black-2);border:1px solid var(--gold-border);
+  border-radius:20px;padding:40px 32px;position:relative;overflow:hidden;
+}
+.gate-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.gate-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;color:var(--gold-light);margin:16px 0 8px;}
+.gate-desc{font-size:13px;color:var(--text-secondary);line-height:1.6;margin-bottom:24px;}
+.gate-input{
+  width:100%;background:var(--black);border:1px solid var(--black-5);
+  border-radius:100px;padding:13px 20px;color:var(--text-primary);
+  font-family:inherit;font-size:14px;text-align:center;outline:none;margin-bottom:12px;
+}
+.gate-input:focus{border-color:var(--gold-border);}
+.gate-btn{width:100%;justify-content:center;}
+.gate-error{font-size:12px;color:#E07A6A;min-height:18px;margin-top:10px;}
+.gate-validity{font-size:11px;color:var(--text-muted);margin-top:18px;letter-spacing:0.04em;}
+</style>
+</head>
+<body class="locked">
+
+<!-- GATE: password + vencimiento -->
+<div id="gate">
+  <div class="gate-box" id="gate-login">
+    <svg width="44" height="44" viewBox="0 0 1590.21 1517.93" xmlns="http://www.w3.org/2000/svg">
+        <circle fill="#020202" cx="798.37" cy="759.62" r="659.19"/>
+        <path fill="#c1a464" d="M703.2,775.19h190.35l-27.93-210.47c68.69-6.56,137.38-13.12,206.08-19.68-46.52-49.28-93.05-98.56-139.57-147.85l-133.75,112.72-133.75-112.72c-46.52,49.28-93.05,98.56-139.57,147.85,68.69,6.56,137.38,13.12,206.08,19.68l-27.93,210.47Z"/>
+        <polygon fill="#c1a464" points="654.57 640.37 504.17 567.02 442.73 632.24 653.08 806.35 654.57 640.37"/>
+        <path fill="#c1a464" d="M775.18,907.85l-113.17-94.12-74.68,75.47c19.33,35.07,45.63,82.62,64.95,117.69,43.29-17.48,79.61-47.42,122.9-64.9v-34.14Z"/>
+        <path fill="#c1a464" d="M673.8,1045.36c5.31,19.79,10.63,39.59,15.94,59.38l26.95,17.3h163.36l26.95-17.3c5.31-19.79,10.63-39.59,15.94-59.38-41.52-9.7-83.05-19.4-124.57-29.09-41.52,9.7-83.05,19.4-124.57,29.09Z"/>
+        <polygon fill="#c1a464" points="943.66 806.35 1154.01 632.24 1092.57 567.02 942.17 640.37 943.66 806.35"/>
+        <path fill="#c1a464" d="M821.56,907.85v34.14c43.29,17.48,78.11,47.42,121.41,64.9,19.33-35.07,47.12-82.62,66.45-117.69l-74.68-75.47-113.17,94.12Z"/>
+      </svg>
+    <div class="gate-title">Propuesta Platinum</div>
+    <div class="gate-desc">Este documento es confidencial. Ingresa la contraseña que te compartió tu ejecutivo de Jeeves.</div>
+    <form id="gate-form" autocomplete="off">
+      <input id="gate-pass" class="gate-input" type="password" placeholder="Contraseña" autofocus>
+      <button type="submit" class="hero-cta gate-btn">Acceder</button>
+    </form>
+    <div class="gate-error" id="gate-error"></div>
+    <div class="gate-validity">Vigente hasta el 15 de octubre de 2026</div>
+  </div>
+  <div class="gate-box" id="gate-expired" style="display:none;">
+    <svg width="44" height="44" viewBox="0 0 1590.21 1517.93" xmlns="http://www.w3.org/2000/svg">
+        <circle fill="#020202" cx="798.37" cy="759.62" r="659.19"/>
+        <path fill="#c1a464" d="M703.2,775.19h190.35l-27.93-210.47c68.69-6.56,137.38-13.12,206.08-19.68-46.52-49.28-93.05-98.56-139.57-147.85l-133.75,112.72-133.75-112.72c-46.52,49.28-93.05,98.56-139.57,147.85,68.69,6.56,137.38,13.12,206.08,19.68l-27.93,210.47Z"/>
+        <polygon fill="#c1a464" points="654.57 640.37 504.17 567.02 442.73 632.24 653.08 806.35 654.57 640.37"/>
+        <path fill="#c1a464" d="M775.18,907.85l-113.17-94.12-74.68,75.47c19.33,35.07,45.63,82.62,64.95,117.69,43.29-17.48,79.61-47.42,122.9-64.9v-34.14Z"/>
+        <path fill="#c1a464" d="M673.8,1045.36c5.31,19.79,10.63,39.59,15.94,59.38l26.95,17.3h163.36l26.95-17.3c5.31-19.79,10.63-39.59,15.94-59.38-41.52-9.7-83.05-19.4-124.57-29.09-41.52,9.7-83.05,19.4-124.57,29.09Z"/>
+        <polygon fill="#c1a464" points="943.66 806.35 1154.01 632.24 1092.57 567.02 942.17 640.37 943.66 806.35"/>
+        <path fill="#c1a464" d="M821.56,907.85v34.14c43.29,17.48,78.11,47.42,121.41,64.9,19.33-35.07,47.12-82.62,66.45-117.69l-74.68-75.47-113.17,94.12Z"/>
+      </svg>
+    <div class="gate-title">Propuesta vencida</div>
+    <div class="gate-desc">Esta propuesta estuvo vigente hasta el 15 de octubre de 2026. Contacta a tu ejecutivo de Jeeves para recibir una propuesta actualizada.</div>
+    <a href="mailto:hola@tryjeeves.com" class="hero-cta gate-btn">Contactar a Jeeves</a>
+  </div>
+</div>
+
+
+<!-- Background canvas for particles -->
+<canvas id="bg-canvas"></canvas>
+
+<div class="page">
+
+  <!-- NAV -->
+  <nav class="reveal">
+    <div class="nav-logo" style="display:flex;align-items:center;gap:10px;">
+      <svg width="30" height="30" viewBox="0 0 1590.21 1517.93" xmlns="http://www.w3.org/2000/svg">
+        <circle fill="#020202" cx="798.37" cy="759.62" r="659.19"/>
+        <path fill="#c1a464" d="M703.2,775.19h190.35l-27.93-210.47c68.69-6.56,137.38-13.12,206.08-19.68-46.52-49.28-93.05-98.56-139.57-147.85l-133.75,112.72-133.75-112.72c-46.52,49.28-93.05,98.56-139.57,147.85,68.69,6.56,137.38,13.12,206.08,19.68l-27.93,210.47Z"/>
+        <polygon fill="#c1a464" points="654.57 640.37 504.17 567.02 442.73 632.24 653.08 806.35 654.57 640.37"/>
+        <path fill="#c1a464" d="M775.18,907.85l-113.17-94.12-74.68,75.47c19.33,35.07,45.63,82.62,64.95,117.69,43.29-17.48,79.61-47.42,122.9-64.9v-34.14Z"/>
+        <path fill="#c1a464" d="M673.8,1045.36c5.31,19.79,10.63,39.59,15.94,59.38l26.95,17.3h163.36l26.95-17.3c5.31-19.79,10.63-39.59,15.94-59.38-41.52-9.7-83.05-19.4-124.57-29.09-41.52,9.7-83.05,19.4-124.57,29.09Z"/>
+        <polygon fill="#c1a464" points="943.66 806.35 1154.01 632.24 1092.57 567.02 942.17 640.37 943.66 806.35"/>
+        <path fill="#c1a464" d="M821.56,907.85v34.14c43.29,17.48,78.11,47.42,121.41,64.9,19.33-35.07,47.12-82.62,66.45-117.69l-74.68-75.47-113.17,94.12Z"/>
+      </svg>
+      <span style="font-size:16px;font-weight:800;letter-spacing:0.08em;color:var(--text-primary);">Jeeves</span>
+    </div>
+    <div class="nav-badge">
+      <div class="nav-badge-dot"></div>
+      <span class="nav-badge-text">Platinum — Propuesta Exclusiva</span>
+    </div>
+  </nav>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap reveal" style="margin-top:24px;">
+    <div class="ticker-inner" id="ticker"></div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero reveal">
+    <div class="hero-eyebrow">Oferta Exclusiva</div>
+    <h1 class="hero-title">Platinum</h1>
+    <div class="hero-title-sub">La Cuenta Corporativa de Mayor Nivel</div>
+    <p class="hero-desc">Diseñada para empresas que requieren máximo control, cashback real, tecnología de integración y atención sin igual.</p>
+
+    <div class="hero-price-block reveal reveal-d1">
+      <div>
+        <div style="font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;">Desde</div>
+        <div class="price-amount">$30,000</div>
+      </div>
+      <div class="price-suffix">
+        <strong>USD / anual</strong>
+        todo incluido · sin sorpresas
+      </div>
+    </div>
+  </div>
+
+  <!-- CASHBACK -->
+  <div class="section-label reveal">Beneficio Flagship</div>
+  <div class="cashback-card reveal reveal-d1">
+    <div class="cashback-orb"></div>
+    <div class="cashback-label">Cashback Real · Primeros 6 meses</div>
+    <div class="cashback-number"><span class="count-up" data-target="1">0</span>%</div>
+    <div class="cashback-desc">De regreso en cada peso que gastes</div>
+    <div class="cashback-sub">Sin topes · Sin categorías excluidas · Depósito automático mensual</div>
+  </div>
+
+  <!-- WORLD ELITE CARDS -->
+  <div class="section-label reveal" style="margin-top:40px;">Tarjetas Corporativas</div>
+  <div class="card-visual reveal reveal-d1">
+    <div class="card-visual-left">
+      <h3>5 Tarjetas<br><em>World Elite</em> incluidas</h3>
+      <p>Las tarjetas corporativas más premium del mercado. Control total de límites, restricciones por categoría y visibilidad en tiempo real desde la plataforma.</p>
+      <div class="card-count">
+        <div class="card-count-n">5</div>
+        <div class="card-count-label">Tarjetas<br>World Elite</div>
+      </div>
+    </div>
+    <div class="card-right">
+      <div class="cc-stack">
+        <div class="cc cc-1">
+          <div class="cc-chip"></div>
+          <div>
+            <div class="cc-num">•••• •••• •••• 4412</div>
+            <div class="cc-name">Corporativo</div>
+          </div>
+        </div>
+        <div class="cc cc-2">
+          <div class="cc-chip"></div>
+          <div>
+            <div class="cc-num">•••• •••• •••• 7823</div>
+            <div class="cc-name">Dirección</div>
+          </div>
+        </div>
+        <div class="cc cc-3">
+          <div class="cc-chip"></div>
+          <div>
+            <div class="cc-num">•••• •••• •••• 9001</div>
+            <div class="cc-name">Platinum · World Elite</div>
+          </div>
+          <div class="cc-logo-area">
+            <div class="we-badge">World Elite</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 FEATURE CARDS -->
+  <div class="grid-3 reveal">
+    <div class="feat-card">
+      <div class="feat-card-icon gold-bg">🎯</div>
+      <div class="feat-card-title">Control granular</div>
+      <div class="feat-card-desc">Límites por empleado, categoría de gasto y período. Tu política, automatizada.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-icon pacific-bg">⚡</div>
+      <div class="feat-card-title">Emisión instantánea</div>
+      <div class="feat-card-desc">Crea tarjetas virtuales en segundos desde la plataforma o vía API.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-card-icon green-bg">📊</div>
+      <div class="feat-card-title">Reportes en tiempo real</div>
+      <div class="feat-card-desc">Visibilidad completa de cada transacción con categorización automática.</div>
+    </div>
+  </div>
+
+  <!-- SOPORTE + PLATFORM ROW -->
+  <div class="section-label reveal" style="margin-top:40px;">Plataforma & Soporte</div>
+  <div class="platform-row reveal reveal-d1">
+    <div class="platform-main">
+      <h3>Plataforma Financiera<br>Todo en Uno</h3>
+      <p>Un solo lugar para gestionar pagos, tarjetas, flujo de caja, conciliación y analytics de gasto de tu empresa.</p>
+      <div class="platform-items">
+        <div class="pi"><div class="pi-dot"></div>Dashboard de gastos en tiempo real</div>
+        <div class="pi"><div class="pi-dot"></div>Conciliación automática con ERP</div>
+        <div class="pi"><div class="pi-dot"></div>Pagos a proveedores nacionales e internacionales</div>
+        <div class="pi"><div class="pi-dot"></div>Múltiples entidades bajo una sola cuenta</div>
+        <div class="pi"><div class="pi-dot"></div>Roles y permisos por área</div>
+      </div>
+    </div>
+    <div class="support-card">
+      <div class="support-icon">🏆</div>
+      <h4>Soporte Técnico Personalizado</h4>
+      <p>Ejecutivo dedicado · Respuesta prioritaria · Onboarding guiado</p>
+      <div class="support-tag">Platinum Only</div>
+    </div>
+  </div>
+
+  <!-- API CARD -->
+  <div class="section-label reveal" style="margin-top:16px;">Integración Tecnológica</div>
+  <div class="api-card reveal reveal-d1">
+    <div class="api-card-text">
+      <h3>API Empresarial</h3>
+      <p>Conecta Jeeves directamente a tu stack tecnológico. Automatiza emisión de tarjetas, consulta saldos, dispara pagos y recibe webhooks en tiempo real. Documentación completa y soporte de integración incluido.</p>
+    </div>
+    <div class="api-code-block">
+      <div><span class="code-comment">// Emitir tarjeta vía API</span></div>
+      <div><span class="code-key">POST</span> <span class="code-str">/v1/cards</span></div>
+      <div>&nbsp;</div>
+      <div>{</div>
+      <div>&nbsp;&nbsp;<span class="code-key">"employee_id"</span>: <span class="code-str">"usr_8821"</span>,</div>
+      <div>&nbsp;&nbsp;<span class="code-key">"limit"</span>: <span class="code-val">50000</span>,</div>
+      <div>&nbsp;&nbsp;<span class="code-key">"currency"</span>: <span class="code-str">"MXN"</span>,</div>
+      <div>&nbsp;&nbsp;<span class="code-key">"type"</span>: <span class="code-str">"virtual"</span>,</div>
+      <div>&nbsp;&nbsp;<span class="code-key">"plan"</span>: <span class="code-str">"platinum"</span></div>
+      <div>}</div>
+      <div>&nbsp;</div>
+      <div><span class="code-comment">// Response: 201 Created</span></div>
+      <div><span class="code-key">"status"</span>: <span class="code-str">"active"</span> ✓</div>
+    </div>
+  </div>
+
+  <!-- GOLD BENEFITS (from deck) -->
+  <div class="section-label reveal" style="margin-top:40px;">Beneficios Gold incluidos</div>
+  <div class="gold-row reveal">
+    <div class="gold-item">
+      <div class="gold-item-icon">🌍</div>
+      <div class="gold-item-title">Pagos Globales</div>
+      <div class="gold-item-desc">FX competitivo en +30 monedas sin cargos ocultos</div>
+    </div>
+    <div class="gold-item">
+      <div class="gold-item-icon">🏢</div>
+      <div class="gold-item-title">Multi-Entidad</div>
+      <div class="gold-item-desc">Gestiona todas tus subsidiarias desde un solo dashboard</div>
+    </div>
+    <div class="gold-item">
+      <div class="gold-item-icon">🔗</div>
+      <div class="gold-item-title">Integraciones ERP</div>
+      <div class="gold-item-desc">NetSuite y QuickBooks. Integración nativa.</div>
+    </div>
+    <div class="gold-item">
+      <div class="gold-item-icon">🛡️</div>
+      <div class="gold-item-title">Controles Anti-Fraude</div>
+      <div class="gold-item-desc">IA que detecta anomalías de gasto en tiempo real</div>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary-band reveal">
+    <div class="section-label" style="justify-content:center;margin-bottom:32px;">
+      <span>Todo lo que incluye Platinum</span>
+    </div>
+    <div class="summary-items">
+      <div class="summary-item">
+        <div class="si-val">1%</div>
+        <div class="si-label">Cashback · 6 meses</div>
+      </div>
+      <div class="summary-item">
+        <div class="si-val">5</div>
+        <div class="si-label">World Elite Cards</div>
+      </div>
+      <div class="summary-item">
+        <div class="si-val">API</div>
+        <div class="si-label">Acceso completo</div>
+      </div>
+      <div class="summary-item">
+        <div class="si-val">24/7</div>
+        <div class="si-label">Soporte dedicado</div>
+      </div>
+      <div class="summary-item">
+        <div class="si-val">1</div>
+        <div class="si-label">Plataforma todo en uno</div>
+      </div>
+    </div>
+    <!-- TODO: reemplazar href con el link de firma -->
+    <a href="#" target="_blank" rel="noopener" class="summary-cta" style="text-decoration:none;">Firmar propuesta →</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="reveal">
+    <div class="footer-logo" style="display:flex;align-items:center;gap:8px;">
+      <svg width="22" height="22" viewBox="0 0 1590.21 1517.93" xmlns="http://www.w3.org/2000/svg">
+        <circle fill="#020202" cx="798.37" cy="759.62" r="659.19"/>
+        <path fill="#c1a464" d="M703.2,775.19h190.35l-27.93-210.47c68.69-6.56,137.38-13.12,206.08-19.68-46.52-49.28-93.05-98.56-139.57-147.85l-133.75,112.72-133.75-112.72c-46.52,49.28-93.05,98.56-139.57,147.85,68.69,6.56,137.38,13.12,206.08,19.68l-27.93,210.47Z"/>
+        <polygon fill="#c1a464" points="654.57 640.37 504.17 567.02 442.73 632.24 653.08 806.35 654.57 640.37"/>
+        <path fill="#c1a464" d="M775.18,907.85l-113.17-94.12-74.68,75.47c19.33,35.07,45.63,82.62,64.95,117.69,43.29-17.48,79.61-47.42,122.9-64.9v-34.14Z"/>
+        <path fill="#c1a464" d="M673.8,1045.36c5.31,19.79,10.63,39.59,15.94,59.38l26.95,17.3h163.36l26.95-17.3c5.31-19.79,10.63-39.59,15.94-59.38-41.52-9.7-83.05-19.4-124.57-29.09-41.52,9.7-83.05,19.4-124.57,29.09Z"/>
+        <polygon fill="#c1a464" points="943.66 806.35 1154.01 632.24 1092.57 567.02 942.17 640.37 943.66 806.35"/>
+        <path fill="#c1a464" d="M821.56,907.85v34.14c43.29,17.48,78.11,47.42,121.41,64.9,19.33-35.07,47.12-82.62,66.45-117.69l-74.68-75.47-113.17,94.12Z"/>
+      </svg>
+      <span style="font-size:13px;font-weight:800;letter-spacing:0.10em;color:var(--text-muted);">Jeeves <span style="color:var(--gold)">Platinum</span></span>
+    </div>
+    <div class="footer-text">tryjeeves.com · hola@tryjeeves.com · Propuesta confidencial · Vigente hasta el 15/10/2026</div>
+  </footer>
+
+</div>
+
+<script>
+// ── GATE: vencimiento + password ──
+(function(){
+  const EXPIRES = new Date('2026-10-15T23:59:59-06:00'); // 15 días, hora CDMX
+  const HASH = '862141ac46901bc52a5c1bdf03f65bd04711ce3d2c6c494dc79585b9eaf97bcc';
+  const KEY = 'jeeves_plat_unlocked';
+  const unlock = () => { document.body.classList.remove('locked'); window.dispatchEvent(new Event('resize')); };
+
+  if (new Date() > EXPIRES) {
+    document.getElementById('gate-login').style.display = 'none';
+    document.getElementById('gate-expired').style.display = 'block';
+    return;
+  }
+  try { if (sessionStorage.getItem(KEY) === HASH) { unlock(); return; } } catch(e) {}
+
+  async function sha256(t){
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t));
+    return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  document.getElementById('gate-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const input = document.getElementById('gate-pass');
+    const err = document.getElementById('gate-error');
+    let ok = false;
+    try { ok = (await sha256(input.value)) === HASH; } catch(_) { err.textContent = 'Abre este archivo en un navegador actualizado.'; return; }
+    if (ok) {
+      try { sessionStorage.setItem(KEY, HASH); } catch(_) {}
+      unlock();
+    } else {
+      err.textContent = 'Contraseña incorrecta';
+      input.value = ''; input.focus();
+    }
+  });
+})();
+</script>
+<script>
+// ── PARTICLE CANVAS ──
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', () => { resize(); initParticles(); });
+
+function initParticles() {
+  particles = [];
+  const count = Math.floor(W * H / 18000);
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 1.2 + 0.3,
+      ox: Math.random() * W, oy: Math.random() * H,
+      speed: Math.random() * 0.0004 + 0.0002,
+      phase: Math.random() * Math.PI * 2,
+      alpha: Math.random() * 0.3 + 0.05,
+      color: Math.random() > 0.7 ? '#C9A84C' : '#E8E8EE'
+    });
+  }
+}
+initParticles();
+
+let t = 0;
+function animateParticles() {
+  ctx.clearRect(0, 0, W, H);
+  t += 0.8;
+  particles.forEach(p => {
+    const angle = p.phase + t * p.speed;
+    p.x = p.ox + Math.sin(angle) * 60;
+    p.y = p.oy + Math.cos(angle * 0.7) * 40;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = p.alpha;
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ── TICKER ──
+const tickerItems = [
+  { icon: '✦', text: '1% Cashback · 6 meses' },
+  { icon: '◆', text: '5 Tarjetas World Elite' },
+  { icon: '✦', text: 'Soporte Personalizado' },
+  { icon: '◆', text: 'API Empresarial' },
+  { icon: '✦', text: 'Plataforma Todo en Uno' },
+  { icon: '◆', text: 'Desde $30,000 USD / anual' },
+  { icon: '✦', text: 'Multi-Entidad' },
+  { icon: '◆', text: 'Integraciones ERP' },
+  { icon: '✦', text: 'Pagos Globales' },
+  { icon: '◆', text: 'Anti-Fraude en Tiempo Real' },
+];
+const ticker = document.getElementById('ticker');
+const doubled = [...tickerItems, ...tickerItems];
+ticker.innerHTML = doubled.map(item =>
+  `<div class="ticker-item"><span>${item.icon}</span>${item.text}</div><div class="ticker-sep"></div>`
+).join('');
+
+// ── SCROLL REVEAL ──
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+revealEls.forEach(el => observer.observe(el));
+
+// ── COUNT UP ──
+function countUp(el) {
+  const target = parseFloat(el.dataset.target);
+  const isInt = Number.isInteger(target);
+  let start = 0;
+  const duration = 1200;
+  const startTime = performance.now();
+  function update(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const val = start + (target - start) * eased;
+    el.textContent = isInt ? Math.round(val) : val.toFixed(1);
+    if (progress < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+const countEls = document.querySelectorAll('.count-up');
+const countObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { countUp(e.target); countObserver.unobserve(e.target); }
+  });
+}, { threshold: 0.5 });
+countEls.forEach(el => countObserver.observe(el));
+
+// Initial reveal for first elements
+setTimeout(() => {
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    if (i < 4) setTimeout(() => el.classList.add('visible'), i * 80);
+  });
+}, 100);
+</script>
+</body>
+</html>
